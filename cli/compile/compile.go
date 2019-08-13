@@ -21,12 +21,12 @@ import (
 	"context"
 	"os"
 
+	"github.com/arduino/arduino-cli/cli/feedback"
 	"github.com/arduino/arduino-cli/cli/globals"
 
 	"github.com/arduino/arduino-cli/cli/errorcodes"
 	"github.com/arduino/arduino-cli/cli/instance"
 	"github.com/arduino/arduino-cli/commands/compile"
-	"github.com/arduino/arduino-cli/common/formatter"
 	rpc "github.com/arduino/arduino-cli/rpc/commands"
 	"github.com/arduino/go-paths-helper"
 	"github.com/sirupsen/logrus"
@@ -103,7 +103,7 @@ func run(cmd *cobra.Command, args []string) {
 	}, os.Stdout, os.Stderr, globals.Config, globals.LogLevel == "debug")
 
 	if err != nil {
-		formatter.PrintError(err, "Error during build")
+		feedback.Errorf("Error during build: %v", err)
 		os.Exit(errorcodes.ErrGeneric)
 	}
 }
@@ -116,7 +116,7 @@ func initSketchPath(sketchPath *paths.Path) *paths.Path {
 
 	wd, err := paths.Getwd()
 	if err != nil {
-		formatter.PrintError(err, "Couldn't get current working directory")
+		feedback.Errorf("Couldn't get current working directory: %v", err)
 		os.Exit(errorcodes.ErrGeneric)
 	}
 	logrus.Infof("Reading sketch from dir: %s", wd)
