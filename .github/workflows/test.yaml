@@ -1,0 +1,13 @@
+name: test
+
+on: [push]
+
+jobs:
+  test:
+    steps:
+      - name: checkout
+        uses: actions/checkout@v1
+
+      - name: lint
+        uses: docker://arduino/arduino-cli:drone-1.1.0
+        args: task check
