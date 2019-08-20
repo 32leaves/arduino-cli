@@ -10,4 +10,5 @@ jobs:
 
       - name: lint
         uses: docker://arduino/arduino-cli:drone-1.1.0
-        args: task check
+        with:
+          args: task check
