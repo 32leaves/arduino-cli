@@ -9,6 +9,7 @@ jobs:
     container:
       image: arduino/arduino-cli:drone-1.1.0
       volumes:
+        # cache go dependencies across pipeline's steps
         - $PWD/go:/go
 
     steps:
