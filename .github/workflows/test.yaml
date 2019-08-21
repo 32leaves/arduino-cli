@@ -9,7 +9,43 @@ jobs:
       - name: checkout
         uses: actions/checkout@v1
 
-      - name: lint
+      - name: check
         uses: docker://arduino/arduino-cli:drone-1.1.0
         with:
+          # Check if the Go code is properly formatted and run the linter and
+          # ensure protobufs compile without errors
           args: task check
+
+      - name: build
+        uses: docker://arduino/arduino-cli:drone-1.1.0
+        with:
+          # Build the CLI
+          args: task build
+
+      - name: test
+        uses: docker://arduino/arduino-cli:drone-1.1.0
+        with:
+          # Run unit tests
+          args: task test-unit
+
+      - name: test-legacy
+        uses: docker://arduino/arduino-cli:drone-1.1.0
+        with:
+          # Run unit tests on the legacy package
+          args: task test-legacy
+
+      - name: test-integrations
+        uses: docker://arduino/arduino-cli:drone-1.1.0
+        with:
+          # Run unit tests on the legacy package
+          args: pip install -r test/requirements.txt && task test-integration
+
+      - name: coverage
+        uses: docker://arduino/arduino-cli:drone-1.1.0
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+        with:
+          # Send results to codecov
+          args: >
+            codecov -cF unit -f coverage_unit.txt -t $CODECOV_TOKEN &&
+            codecov -cF integ -f coverage_integ.txt -t $CODECOV_TOKEN

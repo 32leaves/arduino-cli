@@ -45,6 +45,7 @@ tasks:
       - test -z $(go fmt {{ default .DEFAULT_TARGETS .TARGETS }})
       - go vet {{ default .DEFAULT_TARGETS .TARGETS }}
       - golint {{.GOLINTFLAGS}} {{ default .DEFAULT_TARGETS .TARGETS }}
+      - task: protoc
 
   check-legacy:
     desc: Check fmt and lint for the `legacy` package
