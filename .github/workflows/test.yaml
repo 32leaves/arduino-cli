@@ -5,43 +5,49 @@ on: [push]
 jobs:
   test:
     runs-on: ubuntu-latest
+
+    container:
+      image: arduino/arduino-cli:drone-1.1.0
+      volumes:
+        - $PWD/go:/go
+
     steps:
       - name: checkout
         uses: actions/checkout@v1
 
       - name: check
-        uses: docker://arduino/arduino-cli:drone-1.1.0
+        # uses: docker://arduino/arduino-cli:drone-1.1.0
         with:
           # Check if the Go code is properly formatted and run the linter and
           # ensure protobufs compile without errors
           args: task check
 
       - name: build
-        uses: docker://arduino/arduino-cli:drone-1.1.0
+        # uses: docker://arduino/arduino-cli:drone-1.1.0
         with:
           # Build the CLI
           args: task build
 
       - name: test
-        uses: docker://arduino/arduino-cli:drone-1.1.0
+        # uses: docker://arduino/arduino-cli:drone-1.1.0
         with:
           # Run unit tests
           args: task test-unit
 
       - name: test-legacy
-        uses: docker://arduino/arduino-cli:drone-1.1.0
+        # uses: docker://arduino/arduino-cli:drone-1.1.0
         with:
           # Run unit tests on the legacy package
           args: task test-legacy
 
-      - name: test-integrations
-        uses: docker://arduino/arduino-cli:drone-1.1.0
-        with:
-          # Run unit tests on the legacy package
-          args: pip install -r test/requirements.txt && task test-integration
+      # - name: test-integrations
+      #   uses: docker://arduino/arduino-cli:drone-1.1.0
+      #   with:
+      #     # Run unit tests on the legacy package
+      #     args: pip install -r test/requirements.txt && task test-integration
 
       - name: coverage
-        uses: docker://arduino/arduino-cli:drone-1.1.0
+        # uses: docker://arduino/arduino-cli:drone-1.1.0
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
         with:
