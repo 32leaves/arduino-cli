@@ -42,6 +42,6 @@ jobs:
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
         # Send results to codecov
-        args: |
+        run: |
           codecov -cF unit -f coverage_unit.txt -t $CODECOV_TOKEN
           codecov -cF integ -f coverage_integ.txt -t $CODECOV_TOKEN
